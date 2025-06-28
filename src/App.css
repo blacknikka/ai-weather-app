@@ -1,3 +1,11 @@
+body {
+  background-image: url('https://source.unsplash.com/random/1920x1080/?weather,sky'); /* 仮の背景画像URL */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: #333;
+}
+
 .App {
   text-align: center;
 }
