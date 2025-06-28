@@ -3,10 +3,23 @@ import { Container, Row, Col, Spinner, Alert } from 'react-bootstrap';
 import './App.css';
 import WeatherCard, { getWeatherInfo } from './components/WeatherCard';
 
+interface DailyWeatherData {
+  time: string[];
+  weather_code: number[];
+  temperature_2m_max: number[];
+  temperature_2m_min: number[];
+  precipitation_sum: number[];
+  wind_speed_10m_max: number[];
+}
+
+interface WeatherData {
+  daily: DailyWeatherData;
+}
+
 function App() {
-  const [weatherData, setWeatherData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   const latitude = 35.69; // 東京都千代田区の緯度
   const longitude = 139.75; // 東京都千代田区の経度
@@ -20,9 +33,9 @@ function App() {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const data = await response.json();
+        const data: WeatherData = await response.json();
         setWeatherData(data);
-      } catch (e) {
+      } catch (e: any) {
         setError(e.message);
       } finally {
         setLoading(false);
@@ -99,7 +112,7 @@ function App() {
       {/* 1週間先までの天気 */}
       <h2 className="mb-3">週間予報</h2>
       <Row xs={1} md={2} lg={3} className="g-4">
-        {today.time.slice(2, 9).map((dateString, index) => {
+        {today.time.slice(2, 9).map((dateString: string, index: number) => {
           const date = new Date(dateString);
           const dayIndex = index + 2; // 本日と明日を除いたインデックス
           const dailyWeather = getWeatherInfo(today.weather_code[dayIndex]);

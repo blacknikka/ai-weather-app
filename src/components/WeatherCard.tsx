@@ -2,10 +2,15 @@ import React from 'react';
 import { Card } from 'react-bootstrap';
 import { FaSun, FaCloud, FaCloudRain, FaSnowflake, FaSmog, FaBolt, FaCloudShowersHeavy } from 'react-icons/fa';
 
+export interface WeatherInfo {
+  description: string;
+  icon: React.ReactElement | null;
+}
+
 // 天気コードから説明とアイコンを取得するヘルパー関数
-export const getWeatherInfo = (code) => {
-  let description = '不明';
-  let icon = null;
+export const getWeatherInfo = (code: number): WeatherInfo => {
+  let description: string = '不明';
+  let icon: React.ReactElement | null = null;
 
   switch (code) {
     case 0: description = '快晴'; icon = <FaSun className="text-warning" />; break;
@@ -41,7 +46,17 @@ export const getWeatherInfo = (code) => {
   return { description, icon };
 };
 
-const WeatherCard = ({ date, weatherInfo, maxTemp, minTemp, precipitation, windSpeed, isLarge = false }) => {
+interface WeatherCardProps {
+  date: string;
+  weatherInfo: WeatherInfo;
+  maxTemp: number;
+  minTemp: number;
+  precipitation: number;
+  windSpeed: number;
+  isLarge?: boolean;
+}
+
+const WeatherCard: React.FC<WeatherCardProps> = ({ date, weatherInfo, maxTemp, minTemp, precipitation, windSpeed, isLarge = false }) => {
   return (
     <Card className={`mb-4 shadow-sm ${isLarge ? '' : 'h-100'}`}>
       <Card.Body className="text-center">
